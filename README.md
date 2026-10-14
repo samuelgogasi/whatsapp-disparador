@@ -10,7 +10,7 @@ Conexão por código implementada no painel/API, com QR alternativo, ainda sem v
 
 Cada confirmação de Pix gera uma nova chave exclusiva do usuário para um mês de calendário. O cliente ativa a chave na própria conta. Veja [licenças e operação do Pix](docs/LICENCAS_E_PIX.md). O painel tem navegação por áreas e agendamento pontual de mensagens para grupos, descritos em [agendamento](docs/AGENDAMENTO.md). Públicos salvos, modelos de boletim, alertas de repetição e calendário editorial continuam planejados.
 
-Infraestrutura proposta para o piloto: VPS HostGator existente com Easypanel, em projeto separado. A captura fornecida indica aproximadamente 2 GB de RAM livres naquele momento; a implantação depende de medir picos e validar o consumo do novo sistema. Veja o dimensionamento no plano.
+Infraestrutura do piloto: VPS HostGator existente com Easypanel, no projeto separado `whatsapp-homologacao`. Os containers ainda não foram iniciados. Veja a [avaliação de impacto e isolamento](docs/HOMOLOGACAO.md) antes da implantação.
 
 ## Execução local
 
@@ -44,6 +44,6 @@ Veja [backend/README.md](backend/README.md) para os endpoints. O worker roda no 
 
 ## Colaboração entre IDEs
 
-O Git local está conectado a `origin`: https://github.com/samuelgogasi/whatsapp-disparador.git. A conexão do remote não significa que os arquivos foram publicados. Antes do primeiro commit, configure sua identidade Git e revise `git diff` e `git status`.
+O código foi publicado na branch `main` de https://github.com/samuelgogasi/whatsapp-disparador.git. Antes de trabalhar em outra IDE, sincronize o checkout e revise `git diff` e `git status` para preservar alterações locais.
 
 Trabalhando no mesmo diretório, as IDEs enxergam as mesmas alterações: combine quais arquivos cada uma altera. Para tarefas simultâneas com mudanças sobrepostas, use branches em checkouts separados ou worktrees. Nunca envie `.env` ou `.sessions` ao GitHub.
