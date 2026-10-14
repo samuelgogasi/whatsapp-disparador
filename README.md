@@ -10,7 +10,7 @@ Conexão por código implementada no painel/API, com QR alternativo, ainda sem v
 
 Cada confirmação de Pix gera uma nova chave exclusiva do usuário para um mês de calendário. O cliente ativa a chave na própria conta. Veja [licenças e operação do Pix](docs/LICENCAS_E_PIX.md). O painel tem navegação por áreas e agendamento pontual de mensagens para grupos, descritos em [agendamento](docs/AGENDAMENTO.md). Públicos salvos, modelos de boletim, alertas de repetição e calendário editorial continuam planejados.
 
-Infraestrutura do piloto: VPS HostGator existente com Easypanel, no projeto separado `whatsapp-homologacao`. Os containers ainda não foram iniciados. Veja a [avaliação de impacto e isolamento](docs/HOMOLOGACAO.md) antes da implantação.
+Homologação publicada em https://whatsapp-homologacao-disparador.ngof2y.easypanel.host, na VPS HostGator com Easypanel, no projeto separado `whatsapp-homologacao`. Veja a [avaliação de impacto, verificações e roteiro de teste](docs/HOMOLOGACAO.md).
 
 ## Execução local
 
