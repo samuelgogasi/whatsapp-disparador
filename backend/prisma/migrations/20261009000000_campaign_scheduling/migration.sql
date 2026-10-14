@@ -1,0 +1,2 @@
+ALTER TYPE "CampaignStatus" ADD VALUE 'SCHEDULED';
+ALTER TABLE "Campaign" ADD COLUMN "scheduledAt" TIMESTAMP(3);

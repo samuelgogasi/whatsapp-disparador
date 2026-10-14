@@ -1,0 +1,62 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: whatsapp
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Defina uma senha exclusiva da homologacao}
+      POSTGRES_DB: whatsapp_homologacao
+    command: ["postgres", "-c", "shared_buffers=64MB", "-c", "max_connections=20"]
+    volumes:
+      - homologacao_postgres:/var/lib/postgresql/data
+    mem_limit: 384m
+    cpus: 0.3
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U whatsapp -d whatsapp_homologacao"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory", "64mb", "--maxmemory-policy", "noeviction"]
+    volumes:
+      - homologacao_redis:/data
+    mem_limit: 128m
+    cpus: 0.2
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+  app:
+    build:
+      context: ./backend
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: 3333
+      PUBLIC_URL: ${PUBLIC_URL:?Defina a URL HTTPS da homologacao}
+      ADMIN_API_TOKEN: ${ADMIN_API_TOKEN:?Defina um token exclusivo da homologacao}
+      DATABASE_URL: postgresql://whatsapp:${POSTGRES_PASSWORD}@postgres:5432/whatsapp_homologacao?schema=public&connection_limit=5
+      REDIS_URL: redis://redis:6379
+      WHATSAPP_AUTH_DIR: /app/.sessions
+      NODE_OPTIONS: --max-old-space-size=320
+    volumes:
+      - homologacao_sessoes:/app/.sessions
+    mem_limit: 512m
+    cpus: 0.5
+    stop_grace_period: 35s
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3333/ready').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      start_period: 90s
+      retries: 3
+volumes:
+  homologacao_postgres:
+  homologacao_redis:
+  homologacao_sessoes:

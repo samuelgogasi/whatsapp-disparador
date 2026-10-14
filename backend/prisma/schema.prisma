@@ -1,0 +1,119 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum CampaignStatus {
+  SCHEDULED
+  PENDING
+  PROCESSING
+  COMPLETED
+  PARTIAL_FAILURE
+  PAUSED_LICENSE
+}
+
+enum MessageStatus {
+  PENDING
+  ENVIADO_COM_SUCESSO
+  ERRO
+  BLOQUEADO_LICENCA
+}
+
+enum LicenseKind {
+  TRIAL
+  MONTHLY
+}
+
+model User {
+  id         String     @id @default(cuid())
+  phone      String?    @unique
+  email      String?    @unique
+  name       String?
+  passwordHash String?
+  trialStartedAt DateTime?
+  trialEndsAt DateTime?
+  createdAt  DateTime   @default(now())
+  campaigns  Campaign[]
+  messageLog MessageLog[]
+  licenses   License[]
+  authSessions AuthSession[]
+  payments ManualPayment[]
+}
+
+model License {
+  id        String      @id @default(cuid())
+  userId    String
+  keyHash   String      @unique
+  keyPrefix String
+  kind      LicenseKind
+  expiresAt DateTime
+  activatedAt DateTime?
+  revokedAt DateTime?
+  createdAt DateTime    @default(now())
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  payment   ManualPayment?
+
+  @@index([userId, revokedAt, expiresAt])
+}
+
+model ManualPayment {
+  id        String   @id @default(cuid())
+  userId    String
+  licenseId String   @unique
+  reference String   @unique
+  amountCents Int
+  confirmedAt DateTime @default(now())
+  license   License  @relation(fields: [licenseId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([userId, confirmedAt])
+}
+
+model AuthSession {
+  id        String   @id @default(cuid())
+  userId    String
+  tokenHash String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, expiresAt])
+}
+
+model Campaign {
+  id          String         @id @default(cuid())
+  userId      String
+  text        String
+  mediaUrl    String?
+  mediaType   String?
+  status      CampaignStatus @default(PENDING)
+  scheduledAt DateTime?
+  totalGroups Int            @default(0)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messageLogs MessageLog[]
+
+  @@index([userId, status])
+}
+
+model MessageLog {
+  id         String        @id @default(cuid())
+  campaignId String
+  userId     String
+  groupJid   String
+  groupName  String?
+  status     MessageStatus @default(PENDING)
+  error      String?
+  sentAt     DateTime?
+  createdAt  DateTime      @default(now())
+  campaign   Campaign      @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  user       User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([campaignId, groupJid])
+  @@index([campaignId, status])
+}
