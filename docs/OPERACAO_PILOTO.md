@@ -38,3 +38,7 @@ Os limites de RAM/CPU dos containers permanecem os da homologação. A aplicaç�
 ## Validação
 
 Build TypeScript e testes automatizados locais verificam autorização, isolamento de contas, duplicatas, limites, cancelamento, entrega incerta, recuperação do marcador de transmissão, timeout e cache. O APK precisa de validação em aparelho Android real. Não executar campanhas reais apenas para testar atualização ou migrations.
+
+Esta versão passou por 47 testes locais e foi publicada na homologação a partir do commit `80a3de5`. `/ready` respondeu 200 e `/api/admin/dispatch-status` confirmou intervalos de 10000 ms, pausa de 60000 ms e lote de 30. No PostgreSQL real, duas campanhas técnicas futuras foram criadas diretamente pelo serviço, sem enfileiramento; repetição e terceira campanha ativa retornaram 409. As duas foram canceladas pela API autenticada e todos os seus registros ficaram `CANCELADO`. Permanecem na conta técnica com o prefixo `TESTE TECNICO APK SEM ENVIO`; nenhum destino real recebeu mensagem. A API recusou criação sem confirmação (400) e cancelamento de campanha inexistente (404).
+
+Após a atualização, o portal da UNASP respondeu 200 e seus containers mantiveram os identificadores anteriores. Não houve alteração ou reinicialização dos serviços da UNASP.

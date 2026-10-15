@@ -1,5 +1,11 @@
 # Avaliação e plano de desenvolvimento
 
+## Estado atual do piloto
+
+Homologação HTTPS publicada em projeto separado da UNASP. APK Android 0.1.0 de teste compilado e disponibilizado, com os envios mantidos na VPS. A configuração atual é de 10 segundos por mensagem e uma pausa de um minuto a cada 30 grupos. Cancelamento de pendentes, confirmação de autorização na API, bloqueio de duplicatas, limite de campanhas ativas e pausa para revisão de entrega incerta foram implementados. Há 47 testes locais aprovados e validação de controles na API/PostgreSQL da homologação, sem mensagens reais nos testes desta atualização.
+
+Referências atuais: [Android](docs/ANDROID.md), [operação do piloto](docs/OPERACAO_PILOTO.md) e [homologação](docs/HOMOLOGACAO.md). Permanecem pendentes instalação/pareamento do APK em aparelho real, PWA do iPhone, concorrência justa por cliente, medição de múltiplas sessões, outbox e preparação comercial. As revisões datadas abaixo são histórico da avaliação inicial e não substituem este estado atual.
+
 Revisão: 02/10/2026. Escopo observado: todos os arquivos presentes no backend local.
 
 Atualização de produto: 08/10/2026. Requisitos adicionados: sistema pago, chave individual por usuário e teste grátis de 7 dias. As regras comerciais e os diferenciais abaixo são propostas de implementação; ainda não existem no backend.

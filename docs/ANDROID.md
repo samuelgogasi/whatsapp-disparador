@@ -2,6 +2,15 @@
 
 Projeto nativo em `mobile/android`, aplicativo `br.com.empauta.disparador.homologacao`, Android 8 ou posterior. Abre o painel HTTPS da homologação em WebView e mantém as operações de envio na VPS. O aplicativo não contém token administrativo, credenciais do banco ou sessão de WhatsApp pré-configurada.
 
+APK 0.1.0 de homologação compilado localmente, com Android Lint sem erros (três avisos) e assinatura debug verificada pelo `apksigner`. O download anônimo foi verificado e corresponde ao checksum local.
+
+- [Baixar APK](https://github.com/samuelgogasi/whatsapp-disparador/releases/download/android-homologacao-v0.1.0/em-pauta-homologacao.apk)
+- [Pré-release e checksum](https://github.com/samuelgogasi/whatsapp-disparador/releases/tag/android-homologacao-v0.1.0)
+- Tamanho: 2.249.043 bytes.
+- SHA-256: `ebab3d462d234774b99d584fdb747ece5ebd597d0812e17fd11e99c761be2fe0`.
+
+Não houve instalação ou pareamento deste APK em aparelho físico nesta entrega. A revisão de larguras no navegador não substitui esse teste.
+
 O painel e a API compartilham a mesma origem HTTPS: cookies HttpOnly/Secure e proteção contra origem externa continuam ativos, sem liberar CORS geral. O aplicativo permite navegação interna somente no domínio configurado. Links HTTPS externos abrem em outro aplicativo. Acesso a arquivos/conteúdo, tráfego HTTP e conteúdo misto estão desativados; não existe ponte JavaScript nativa. Erros de certificado não são ignorados.
 
 Há confirmação nativa para operações que usam `confirm`, navegação Voltar compatível com Android recente, tratamento de área segura/teclado, persistência de cookies e tela para tentar novamente quando o painel não abre. Não há suporte offline para campanhas; indisponibilidade de rede impede usar o painel. Campanhas já criadas dependem da VPS, da licença e da conexão WhatsApp, não de manter o APK aberto.

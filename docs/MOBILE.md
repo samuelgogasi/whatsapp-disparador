@@ -24,7 +24,7 @@ Uma PWA instalável precisa de configuração própria, como manifest, nome/íco
 
 No iPhone, o Safari permite adicionar a aplicação web à tela inicial. Android também possui mecanismos de instalação de aplicações web em navegadores compatíveis. O fluxo de instalação varia conforme navegador/versão, então o painel deve mostrar orientação adequada ao dispositivo, sem prometer um botão universal.
 
-APK é um pacote Android; não atende iPhone. Aplicativos próprios Android/iOS ou um empacotamento multiplataforma serão avaliados depois, se recursos nativos e demanda justificarem desenvolvimento, publicação e manutenção adicionais. Criar APK por si só não corrige o layout nem o funcionamento do sistema.
+APK é um pacote Android; não atende iPhone. O [APK Android de homologação](ANDROID.md) foi criado mantendo os envios na VPS. A validação em aparelho físico continua pendente. Criar APK por si só não corrige o layout nem o funcionamento do sistema.
 
 ## Etapas para uma experiência móvel completa
 
@@ -35,7 +35,7 @@ APK é um pacote Android; não atende iPhone. Aplicativos próprios Android/iOS 
 - [ ] Definir estratégia de cache/atualização/offline antes de implementar service worker. Não guardar respostas autenticadas, QR, chaves, comprovantes ou dados pessoais no cache da aplicação.
 - [ ] Publicar em domínio HTTPS e validar instalação/atualização como aplicativo web em dispositivos reais.
 - [x] Implementar pareamento por código para conectar usando o mesmo celular; QR mantido como alternativa.
-- [ ] Validar o pareamento real em Android/iPhone. Modelo solicitado: APK para Android e PWA para iPhone, ainda a construir. Veja [APK/PWA e pareamento](APK_PWA_E_PAREAMENTO.md).
+- [ ] Validar o pareamento real em Android/iPhone. APK Android já foi compilado; instalação PWA iOS continua pendente. Veja [APK/PWA e pareamento](APK_PWA_E_PAREAMENTO.md).
 
 ## Execução dos envios
 

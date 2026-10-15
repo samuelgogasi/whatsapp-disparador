@@ -4,9 +4,9 @@ Atualização: 14/10/2026.
 
 ## Modelo de distribuição
 
-Proposta alinhada ao pedido: Android com APK e iPhone com aplicação web instalável (PWA), reutilizando o mesmo painel e backend. É viável sem duplicar regras de licença, Pix ou agendamento. APK/PWA ainda não foram construídos nesta entrega; o que foi implementado agora é o pareamento por código.
+Android com APK e iPhone com aplicação web instalável (PWA), reutilizando o mesmo painel e backend. O APK nativo de homologação foi compilado e disponibilizado; a instalação PWA do iPhone continua pendente. Veja [APK e instruções atuais](ANDROID.md) e [controles do piloto](OPERACAO_PILOTO.md). As demais seções abaixo registram o planejamento e a validação inicial do pareamento.
 
-Capacitor é uma opção para reaproveitar os arquivos web em um projeto Android. O trabalho adicional inclui configurar ambiente Android, integração segura com o backend, assinatura, distribuição e atualização do aplicativo. Instalação direta de APK e distribuição pela Play Store são caminhos diferentes, com requisitos próprios a definir antes de publicar.
+O piloto usa WebView nativo restrito ao domínio HTTPS da homologação, mantendo painel e API na mesma origem. Capacitor permanece uma alternativa futura, não foi uma dependência adotada. Instalação direta de APK e distribuição pela Play Store são caminhos diferentes.
 
 No projeto atual a autenticação usa cookies de mesma origem. Não basta copiar o HTML para um WebView local e apontar chamadas para outro domínio: precisamos definir origem da aplicação/API, autenticação no aplicativo, política de cookies/CORS e navegação para WhatsApp. Não enfraquecer essas proteções para fazer o empacotamento funcionar. O domínio de produção ainda precisa ser escolhido/configurado.
 
@@ -34,10 +34,11 @@ A prévia local mostra o formulário, mas não gera código real. Pareamento pre
 
 - [x] Implementar formulário/API de código, controle de solicitações e testes.
 - [ ] Validar vínculo e retorno do WhatsApp em aparelhos reais, incluindo código recusado/expirado e conexão interrompida.
-- [ ] Publicar backend/painel em homologação HTTPS e validar sessão/licença.
+- [x] Publicar backend/painel em homologação HTTPS e validar sessão/licença.
 - [ ] Preparar PWA do iPhone e testar instalação, teclado, retorno do WhatsApp e atualização.
-- [ ] Preparar projeto Android compartilhando o painel e definir autenticação/origens e abertura do WhatsApp.
-- [ ] Configurar assinatura, gerar APK de teste e validar em Android real.
+- [x] Preparar projeto Android compartilhando o painel e definir autenticação/origens e abertura de links HTTPS externos.
+- [x] Gerar APK com assinatura de desenvolvimento e verificar a integridade.
+- [ ] Validar APK, pareamento e retorno do WhatsApp em Android real.
 - [ ] Definir distribuição e atualização; depois emitir artefato de produção.
 
 ## Referências
