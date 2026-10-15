@@ -1,0 +1,827 @@
+[
+  {
+    "at": "2026-10-15T02:36:19.263Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 141
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 142
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:36:21.351Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 28
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 77
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:36:23.434Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 26
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 78
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:36:25.525Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 40
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 89
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:36:27.648Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 40
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 111
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:36:29.749Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 28
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 91
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:36:31.864Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 47
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 104
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:36:33.960Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 42
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 88
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:36:36.060Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 41
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 94
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:36:38.148Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 42
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 87
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:36:40.256Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 43
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 95
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:36:42.361Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 41
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 91
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:36:44.456Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 39
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 93
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:36:46.547Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 39
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 88
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:36:48.659Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 39
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 95
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:36:50.758Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 38
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 87
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:36:52.866Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 40
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 94
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:36:54.960Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 42
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 89
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:36:57.053Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 39
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 91
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:36:59.156Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 41
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 89
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:37:01.257Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 41
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 94
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:37:03.359Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 38
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 91
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:37:05.453Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 39
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 93
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:37:07.544Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 24
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 75
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:37:09.653Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 41
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 94
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:37:11.751Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 40
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 90
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:37:13.859Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 38
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 97
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:37:15.961Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 38
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 91
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:37:18.061Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 40
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 94
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:37:20.167Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 25
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 91
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:37:22.261Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 26
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 95
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:37:24.369Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 40
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 92
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:37:26.477Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 40
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 93
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:37:28.574Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 28
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 84
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:37:30.682Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 26
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 99
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:37:32.782Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 41
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 88
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:37:34.874Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 39
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 91
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:37:36.974Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 39
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 88
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:37:39.073Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 25
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 86
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:37:41.164Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 41
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 90
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:37:43.273Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 41
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 94
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:37:45.372Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 31
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 86
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:37:47.466Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 25
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 92
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:37:49.571Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 41
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 90
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:37:51.680Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 42
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 96
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:37:53.777Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 41
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 91
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:37:55.885Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 40
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 93
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:37:57.984Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 45
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 88
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:38:00.064Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 32
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 79
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:38:02.176Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 42
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 99
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:38:04.292Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 27
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 110
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:38:06.400Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 43
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 99
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:38:08.483Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 24
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 78
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:38:10.612Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 41
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 114
+      }
+    ]
+  },
+  {
+    "at": "2026-10-15T02:38:12.716Z",
+    "checks": [
+      {
+        "url": "https://whatsapp-homologacao-disparador.ngof2y.easypanel.host/ready",
+        "status": 200,
+        "ms": 39
+      },
+      {
+        "url": "https://unaspbrasil.org/",
+        "status": 200,
+        "ms": 93
+      }
+    ]
+  }
+]

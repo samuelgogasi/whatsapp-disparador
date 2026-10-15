@@ -46,6 +46,8 @@ Os projetos compartilham CPU, RAM, disco, rede, Docker, Easypanel e proxy. Porta
 
 ## Verificações realizadas e uso nos aparelhos
 
+Depois da publicação, foi executada uma [simulação de 500 tarefas sem envios reais](SIMULACAO_500_GRUPOS.md), com banco e fila reais. O relatório descreve resultados e limites; não é teste de capacidade de 500 grupos WhatsApp reais ou de múltiplas sessões.
+
 Build TypeScript e 40 testes automatizados passaram localmente; o build Docker na VPS terminou e sua auditoria não reportou vulnerabilidades. Na aplicação publicada, foram verificados cadastro, cookie Secure, login, logout com invalidação de sessão, ativação do teste de sete dias, consulta de campanhas e leitura administrativa da conta e do teste. A API administrativa retornou 401 sem token. Uma conta técnica identificada como `Teste tecnico de homologacao` permanece no banco novo; nenhum envio ou pagamento foi realizado.
 
 O navegador abriu login, administração autenticada e painel autenticado. O layout publicado foi conferido em larguras de 320, 390 e 430 px, sem rolagem horizontal da página nas telas examinadas. Essa simulação não substitui Chrome Android e Safari iOS reais.
