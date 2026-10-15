@@ -22,11 +22,14 @@ function showView(view) {
 for (const button of document.querySelectorAll('[data-view]')) button.addEventListener('click', () => showView(button.dataset.view));
 for (const view of ['compose', 'whatsapp', 'schedule']) for (const button of document.querySelectorAll(`.navigate-${view}`)) button.addEventListener('click', () => showView(view));
 function showAuth(mode) {
+  $('#auth-title').textContent = mode === 'register' ? 'Experimente por 7 dias grátis' : 'Acesse seu painel';
+  $('#auth-description').textContent = mode === 'register' ? 'Crie sua conta para testar a divulgação de matérias em grupos. Ative o período grátis quando estiver pronto.' : 'Prepare sua matéria, escolha os grupos e acompanhe cada divulgação em um só lugar.';
   $('#login').hidden = mode !== 'login'; $('#register').hidden = mode !== 'register';
   $('#show-login').classList.toggle('active', mode === 'login'); $('#show-register').classList.toggle('active', mode === 'register');
 }
 $('#show-login').addEventListener('click', () => showAuth('login'));
 $('#show-register').addEventListener('click', () => showAuth('register'));
+$('#open-trial').addEventListener('click', () => showView('billing'));
 
 async function loadAccount() {
   const initial = !account;
@@ -48,6 +51,7 @@ async function loadAccount() {
   $('#metric-license').textContent = license?.active ? license.kind === 'TRIAL' ? 'Teste' : 'Mensal' : 'Inativa';
   $('#metric-expiry').textContent = license ? `Até ${date(license.expiresAt)}` : 'Ative o teste ou sua chave';
   $('#start-trial').hidden = Boolean(account.user.trialStartedAt || license);
+  $('#trial-onboarding').hidden = Boolean(account.user.trialStartedAt || license);
   $('#access-title').textContent = license?.active ? (license.kind === 'TRIAL' ? 'Seus 7 dias grátis estão ativos' : 'Sua licença mensal está ativa') : 'Ative seu acesso';
   $('#access-detail').textContent = license ? `${license.revokedAt ? 'Chave revogada.' : !license.activatedAt ? 'Chave aguardando ativação.' : !license.active ? 'Acesso expirado.' : 'Você pode criar divulgações.'} Validade: ${date(license.expiresAt)} (Brasília).` : 'Comece o teste ou informe a chave que recebeu após o pagamento.';
   await loadPayment();

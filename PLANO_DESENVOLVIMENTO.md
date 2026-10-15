@@ -1,5 +1,7 @@
 # Avaliação e plano de desenvolvimento
 
+Precificação e regras comerciais: ver [proposta de 15/10/2026](docs/PRECIFICACAO_E_REGRAS.md). Cadastro com destaque dos sete dias grátis e orientação inicial implementados. Preço e franquias permanecem em definição; não há contador mensal no backend.
+
 ## Atualização de 15/10/2026 — iPhone
 
 PWA implementado: manifest, ícones PNG (incluindo apple-touch-icon), abertura standalone e guia em `/install.html`. O usuário confirmou que o APK Android funcionou no aparelho. A instalação e o uso em iPhone real ainda aguardam validação.
