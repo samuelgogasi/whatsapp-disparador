@@ -21,14 +21,22 @@ export const connection = {
   ...(redis.password ? { password: decodeURIComponent(redis.password) } : {})
 };
 
-export const dispatchQueue = new Queue<DispatchJob>('whatsapp-dispatch', {
+export type AccountJob = { userId: string };
+export const accountQueue = new Queue<AccountJob>('whatsapp-accounts-v2', {
   connection: { ...connection, maxRetriesPerRequest: 1 },
-  defaultJobOptions: {
-    attempts: 2,
-    backoff: { type: 'exponential', delay: 30_000 },
-    removeOnComplete: 1_000,
-    removeOnFail: 2_000
-  }
+  defaultJobOptions: { attempts: 2, backoff: { type: 'exponential', delay: 5000 }, removeOnComplete: true, removeOnFail: true }
 });
+accountQueue.on('error', () => console.error('Falha na fila de contas'));
 
-dispatchQueue.on('error', (error) => console.error('Falha na fila:', error));
+export async function enqueueAccounts(jobs: { data: { userId: string } }[]) {
+  return accountQueue.addBulk([...new Set(jobs.map(job => job.data.userId))].map(userId => ({
+    name: 'account', data: { userId }, opts: { jobId: 'account-' + userId }
+  })));
+}
+export async function reconcileAccounts(db: import('@prisma/client').PrismaClient) {
+  const users = await db.messageLog.groupBy({ by: ['userId'], where: { OR: [
+    { status: 'EM_ENVIO' },
+    { status: 'PENDING', campaign: { status: { in: ['PENDING', 'SCHEDULED', 'PROCESSING'] } } }
+  ] } });
+  if (users.length) await enqueueAccounts(users.map(data => ({ data })));
+}

@@ -1,5 +1,7 @@
 # Avaliação e plano de desenvolvimento
 
+Atualização de 15/10/2026: [fila por conta e concorrência de três contas](docs/FILAS_POR_CONTA.md). Limites do aplicativo ajustados para 1.536 MiB e 1 CPU. As descrições de fila global serial abaixo são históricas; os cálculos de capacidade anteriores não se aplicam diretamente à nova coordenação.
+
 Precificação e regras comerciais: ver [proposta de 15/10/2026](docs/PRECIFICACAO_E_REGRAS.md). Cadastro com destaque dos sete dias grátis e orientação inicial implementados. Preço e franquias permanecem em definição; não há contador mensal no backend.
 
 ## Atualização de 15/10/2026 — iPhone

@@ -1,5 +1,7 @@
 # Precificação e regras comerciais — proposta de 15/10/2026
 
+Atualização de 15/10/2026: [fila por conta e concorrência de três contas](FILAS_POR_CONTA.md). Limites do aplicativo ajustados para 1.536 MiB e 1 CPU. As descrições de fila global serial abaixo são históricas; os cálculos de capacidade anteriores não se aplicam diretamente à nova coordenação.
+
 Este documento separa a proposta comercial das regras já implementadas. Os preços abaixo ainda precisam ser definidos pelo proprietário antes de serem anunciados no produto. Nenhuma mensalidade ou franquia foi habilitada por esta alteração.
 
 ## Referências públicas

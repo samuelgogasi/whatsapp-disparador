@@ -45,7 +45,7 @@ async function loadAccount() {
   const license = account.license;
   if (account.dispatch) {
     const timing = account.dispatch;
-    $('#dispatch-info').textContent = `Espera entre envios: ${timing.minDelayMs / 1000}–${timing.maxDelayMs / 1000} segundos. Pausa de ${timing.minBatchPauseMs / 60000}–${timing.maxBatchPauseMs / 60000} minuto(s) a cada ${timing.batchSize} grupos. O tempo de rede e outras campanhas podem prolongar a conclusão.`;
+    $('#dispatch-info').textContent = `Espera entre envios: ${timing.minDelayMs / 1000}–${timing.maxDelayMs / 1000} segundos. Pausa de ${timing.minBatchPauseMs / 60000}–${timing.maxBatchPauseMs / 60000} minuto(s) a cada ${timing.batchSize} grupos. Os intervalos são por conta, inclusive entre campanhas. Disponível 24 horas por dia; outras contas avançam independentemente, dentro da capacidade do servidor. O tempo de rede e a fila podem prolongar a conclusão.`;
   }
   $('#header-access').textContent = license?.active ? 'Licença ativa' : 'Ative sua licença';
   $('#metric-license').textContent = license?.active ? license.kind === 'TRIAL' ? 'Teste' : 'Mensal' : 'Inativa';

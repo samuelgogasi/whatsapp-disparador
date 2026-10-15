@@ -20,6 +20,7 @@ COPY --from=build --chown=node:node /app/package.json ./package.json
 COPY --chown=node:node public ./public
 COPY --chown=node:node prisma ./prisma
 COPY --chown=node:node scripts/start.mjs ./scripts/start.mjs
+COPY --chown=node:node scripts/test-account-dispatch.mjs ./scripts/test-account-dispatch.mjs
 RUN mkdir -p /app/.sessions && chown node:node /app/.sessions
 USER node
 EXPOSE 3333

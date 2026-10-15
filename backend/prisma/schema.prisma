@@ -48,6 +48,14 @@ model User {
   licenses   License[]
   authSessions AuthSession[]
   payments ManualPayment[]
+  dispatchPacing DispatchPacing?
+}
+
+model DispatchPacing {
+  userId String @id
+  nextAt DateTime
+  batchCount Int @default(0)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model License {
@@ -119,10 +127,13 @@ model MessageLog {
   status     MessageStatus @default(PENDING)
   error      String?
   sentAt     DateTime?
+  attempts   Int @default(0)
+  availableAt DateTime?
   createdAt  DateTime      @default(now())
   campaign   Campaign      @relation(fields: [campaignId], references: [id], onDelete: Cascade)
   user       User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([campaignId, groupJid])
   @@index([campaignId, status])
+  @@index([userId, status])
 }

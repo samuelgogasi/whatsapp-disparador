@@ -1,5 +1,7 @@
 # Operação do piloto
 
+Atualização de 15/10/2026: [fila por conta e concorrência de três contas](FILAS_POR_CONTA.md). Limites do aplicativo ajustados para 1.536 MiB e 1 CPU. As descrições de fila global serial abaixo são históricas; os cálculos de capacidade anteriores não se aplicam diretamente à nova coordenação.
+
 Os envios permanecem na VPS. Fechar o APK ou o navegador não cancela a fila. Ainda existe um único envio em processamento no conjunto do sistema; esta entrega não implementa filas independentes por cliente nem comprova capacidade para dez sessões.
 
 ## Intervalos

@@ -105,7 +105,10 @@ export function createApp(deps: AppDependencies, settings = config) {
     batchPauseMs: { min: settings.minBatchPauseMs, max: settings.maxBatchPauseMs },
     sendTimeoutMs: settings.sendTimeoutMs,
     maxActiveCampaignsPerUser: settings.maxActiveCampaigns,
-    concurrency: 1,
+    concurrency: settings.dispatchConcurrency,
+    scheduling: 'per-account',
+    hours: '24/7',
+    memorySoftLimitMb: settings.dispatchMemorySoftMb,
     campaigns: await db.campaign.groupBy({ by: ['status'], _count: true })
   }));
 

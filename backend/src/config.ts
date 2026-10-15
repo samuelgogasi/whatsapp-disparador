@@ -24,6 +24,8 @@ export const environmentSchema = z.object({
   COMPOSING_MIN_MS: integer(0),
   COMPOSING_MAX_MS: integer(0),
   SEND_TIMEOUT_MS: integer(45000, 10000),
+  DISPATCH_CONCURRENCY: integer(3, 1).refine(value => value <= 10, 'Use no máximo 10 transmissões simultâneas'),
+  DISPATCH_MEMORY_SOFT_MB: integer(1280, 128),
   MAX_ACTIVE_CAMPAIGNS: integer(2, 1).refine((value) => value <= 5, 'Use no máximo 5 campanhas ativas por cliente')
 }).superRefine((env, ctx) => {
   for (const [min, max] of [
@@ -53,5 +55,7 @@ export const config = {
   composingMinMs: env.COMPOSING_MIN_MS,
   composingMaxMs: env.COMPOSING_MAX_MS,
   sendTimeoutMs: env.SEND_TIMEOUT_MS,
+  dispatchConcurrency: env.DISPATCH_CONCURRENCY,
+  dispatchMemorySoftMb: env.DISPATCH_MEMORY_SOFT_MB,
   maxActiveCampaigns: env.MAX_ACTIVE_CAMPAIGNS
 };

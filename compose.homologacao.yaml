@@ -39,7 +39,7 @@ services:
       DATABASE_URL: postgresql://whatsapp:${POSTGRES_PASSWORD}@postgres:5432/whatsapp_homologacao?schema=public&connection_limit=5
       REDIS_URL: redis://redis:6379
       WHATSAPP_AUTH_DIR: /app/.sessions
-      NODE_OPTIONS: --max-old-space-size=320
+      NODE_OPTIONS: --max-old-space-size=1024
       MIN_MESSAGE_DELAY_MS: 10000
       MAX_MESSAGE_DELAY_MS: 10000
       GROUP_BATCH_SIZE: 30
@@ -47,11 +47,13 @@ services:
       MAX_BATCH_PAUSE_MS: 60000
       SEND_TIMEOUT_MS: 45000
       MAX_ACTIVE_CAMPAIGNS: 2
+      DISPATCH_CONCURRENCY: 3
+      DISPATCH_MEMORY_SOFT_MB: 1280
     volumes:
       - homologacao_sessoes:/app/.sessions
-    mem_limit: 512m
-    cpus: 0.5
-    stop_grace_period: 35s
+    mem_limit: 1536m
+    cpus: 1.0
+    stop_grace_period: 65s
     depends_on:
       postgres:
         condition: service_healthy

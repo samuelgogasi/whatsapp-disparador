@@ -1,5 +1,7 @@
 # Homologação na VPS existente
 
+Atualização de 15/10/2026: [fila por conta e concorrência de três contas](FILAS_POR_CONTA.md). Limites do aplicativo ajustados para 1.536 MiB e 1 CPU. As descrições de fila global serial abaixo são históricas; os cálculos de capacidade anteriores não se aplicam diretamente à nova coordenação.
+
 ## Atualização de 15/10/2026 — iPhone
 
 PWA implementado: manifest, ícones PNG (incluindo apple-touch-icon), abertura standalone e guia em `/install.html`. O usuário confirmou que o APK Android funcionou no aparelho. A instalação e o uso em iPhone real ainda aguardam validação.
