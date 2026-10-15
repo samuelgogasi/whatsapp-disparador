@@ -9,7 +9,7 @@ APK 0.1.0 de homologação compilado localmente, com Android Lint sem erros (tr�
 - Tamanho: 2.249.043 bytes.
 - SHA-256: `ebab3d462d234774b99d584fdb747ece5ebd597d0812e17fd11e99c761be2fe0`.
 
-Não houve instalação ou pareamento deste APK em aparelho físico nesta entrega. A revisão de larguras no navegador não substitui esse teste.
+Em 15/10/2026, o usuário confirmou que instalou e testou o APK em Android e que funcionou perfeitamente. Esse é um relato do teste do usuário; a implementação PWA para iPhone ainda aguarda teste físico.
 
 O painel e a API compartilham a mesma origem HTTPS: cookies HttpOnly/Secure e proteção contra origem externa continuam ativos, sem liberar CORS geral. O aplicativo permite navegação interna somente no domínio configurado. Links HTTPS externos abrem em outro aplicativo. Acesso a arquivos/conteúdo, tráfego HTTP e conteúdo misto estão desativados; não existe ponte JavaScript nativa. Erros de certificado não são ignorados.
 

@@ -55,3 +55,5 @@ button:focus-visible,a:focus-visible{outline:3px solid #82b99c;outline-offset:3p
 
 /* Instalação e áreas seguras do iPhone em modo aplicativo. */
 .install-content{max-width:680px;margin:auto;padding:32px max(20px,env(safe-area-inset-right)) max(28px,env(safe-area-inset-bottom)) max(20px,env(safe-area-inset-left))}.install-content>.brand{margin-bottom:28px}.install-content>.card{margin-bottom:20px}.install-open{display:inline-block;padding:14px 0;font-weight:700}.system .topbar{padding-top:max(16px,env(safe-area-inset-top))}@media(display-mode:standalone){.system .sidebar{padding-top:max(20px,env(safe-area-inset-top))}}
+
+.install-content>.brand{display:flex;align-items:center;gap:12px;text-decoration:none;font-size:21px;font-weight:700}.install-content>.brand small{display:block;font-size:12px;font-weight:400;margin-top:4px}.install-content>.brand img{border-radius:12px}.install-content h1{font-size:30px;line-height:1.15}
