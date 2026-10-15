@@ -52,3 +52,6 @@ button:focus-visible,a:focus-visible{outline:3px solid #82b99c;outline-offset:3p
 }
 .pairing-code{display:block;font:700 30px/1.5 ui-monospace,monospace;letter-spacing:3px;padding:16px 20px;background:#edf5ef;border:1px solid #bbd5c4;border-radius:10px;margin:15px 0;overflow-wrap:anywhere}summary{cursor:pointer;font-size:14px;color:#476a57;min-height:44px;padding:10px 0}
 .admin-search{display:flex;gap:16px;align-items:end;flex-wrap:wrap;margin-bottom:20px}.admin-search label{flex:1;min-width:180px}.admin-search>button{margin-bottom:12px}.admin-metrics{margin-bottom:24px}.admin-metrics .metric strong{font-size:23px}.admin-metrics .metric{overflow-wrap:anywhere}@media(max-width:560px){.admin-search{display:block}.admin-search>button{width:100%}}
+
+/* Instalação e áreas seguras do iPhone em modo aplicativo. */
+.install-content{max-width:680px;margin:auto;padding:32px max(20px,env(safe-area-inset-right)) max(28px,env(safe-area-inset-bottom)) max(20px,env(safe-area-inset-left))}.install-content>.brand{margin-bottom:28px}.install-content>.card{margin-bottom:20px}.install-open{display:inline-block;padding:14px 0;font-weight:700}.system .topbar{padding-top:max(16px,env(safe-area-inset-top))}@media(display-mode:standalone){.system .sidebar{padding-top:max(20px,env(safe-area-inset-top))}}

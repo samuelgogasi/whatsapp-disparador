@@ -1,5 +1,17 @@
 # Homologação na VPS existente
 
+## Atualização de 15/10/2026 — iPhone
+
+PWA implementado: manifest, ícones PNG (incluindo apple-touch-icon), abertura standalone e guia em `/install.html`. O usuário confirmou que o APK Android funcionou no aparelho. A instalação e o uso em iPhone real ainda aguardam validação.
+
+No Safari, abra o endereço HTTPS da homologação, toque em Compartilhar → Adicionar à Tela de Início e mantenha “Abrir como App da Web” ativado, se a opção aparecer. Abra o ícone e faça login.
+
+O service worker armazena somente offline.html, offline.css e o ícone público de indisponibilidade. Não armazena painel, APIs, dados da conta ou administração; não há fila local, sincronização em segundo plano ou reenvio offline. JavaScript/CSS do painel e navegações usam a rede; alterações chegam ao abrir novamente. Workers novos aguardam o fechamento das telas antigas, sem recarregar formulários automaticamente. Envios aceitos permanecem na VPS.
+
+Validação técnica: testes do worker para cache restrito, APIs/admin não interceptados, fallback offline e dimensões dos ícones; testes existentes e build TypeScript. Teste físico pendente: instalar pelo Safari, entrar, parear por código, copiar/colar, agendar, alternar para WhatsApp e reabrir o ícone.
+
+### Registro anterior
+
 ## Restrição de operação
 
 Não alterar, reiniciar, parar, reimplantar ou reutilizar `unasp-db` e `unasp-portal`. O serviço `teste` também permanece sem alterações. Não alterar configurações globais, redes, volumes, credenciais ou rotas da UNASP para implantar este projeto.

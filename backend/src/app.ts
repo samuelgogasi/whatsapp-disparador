@@ -38,7 +38,7 @@ export function createApp(deps: AppDependencies, settings = config) {
   const app = express();
   app.disable('x-powered-by');
   app.use((_req, res, next) => {
-    res.set({ 'X-Content-Type-Options': 'nosniff', 'X-Frame-Options': 'DENY', 'Referrer-Policy': 'same-origin', 'Content-Security-Policy': "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'" });
+    res.set({ 'X-Content-Type-Options': 'nosniff', 'X-Frame-Options': 'DENY', 'Referrer-Policy': 'same-origin', 'Content-Security-Policy': "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; manifest-src 'self'; worker-src 'self'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'" });
     next();
   });
   app.use('/api', (req, res, next) => {
@@ -168,6 +168,7 @@ export function createApp(deps: AppDependencies, settings = config) {
     res.json(await db.messageLog.findMany({ where: { campaignId: campaign.id, userId: res.locals.userId }, orderBy: { createdAt: 'asc' } }));
   });
 
+  app.use(['/sw.js', '/manifest.webmanifest', '/index.html', '/install.html', '/'], (_req, res, next) => { res.set('Cache-Control', 'no-cache'); next(); });
   app.use(express.static(path.join(fileURLToPath(new URL('../public/', import.meta.url)))));
   app.use((error: unknown, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
     if (error instanceof z.ZodError) return res.status(400).json({ error: error.issues.map((issue) => issue.message).join(', ') });

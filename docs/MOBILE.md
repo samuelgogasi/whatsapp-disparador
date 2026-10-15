@@ -1,5 +1,17 @@
 # Uso em Android e iPhone
 
+## Atualização de 15/10/2026 — iPhone
+
+PWA implementado: manifest, ícones PNG (incluindo apple-touch-icon), abertura standalone e guia em `/install.html`. O usuário confirmou que o APK Android funcionou no aparelho. A instalação e o uso em iPhone real ainda aguardam validação.
+
+No Safari, abra o endereço HTTPS da homologação, toque em Compartilhar → Adicionar à Tela de Início e mantenha “Abrir como App da Web” ativado, se a opção aparecer. Abra o ícone e faça login.
+
+O service worker armazena somente offline.html, offline.css e o ícone público de indisponibilidade. Não armazena painel, APIs, dados da conta ou administração; não há fila local, sincronização em segundo plano ou reenvio offline. JavaScript/CSS do painel e navegações usam a rede; alterações chegam ao abrir novamente. Workers novos aguardam o fechamento das telas antigas, sem recarregar formulários automaticamente. Envios aceitos permanecem na VPS.
+
+Validação técnica: testes do worker para cache restrito, APIs/admin não interceptados, fallback offline e dimensões dos ícones; testes existentes e build TypeScript. Teste físico pendente: instalar pelo Safari, entrar, parear por código, copiar/colar, agendar, alternar para WhatsApp e reabrir o ícone.
+
+### Registro anterior
+
 Revisão: 14/10/2026.
 
 ## Estado atual
@@ -20,11 +32,11 @@ Verificação no navegador de desenvolvimento: larguras de 320, 390 e 430 px; vi
 
 Manter um único painel responsivo e prepará-lo como PWA, com instalação na tela inicial. O mesmo backend e o mesmo controle de licença atendem celular e computador.
 
-Uma PWA instalável precisa de configuração própria, como manifest, nome/ícones, modo de exibição e publicação HTTPS. Isso ainda não foi implementado. O projeto não contém manifest ou service worker e ainda não é apresentado como PWA pronta.
+Uma PWA instalável precisa de configuração própria, como manifest, nome/ícones, modo de exibição e publicação HTTPS. A implementação foi concluída em 15/10/2026, conforme a atualização acima; a validação em iPhone físico permanece pendente.
 
 No iPhone, o Safari permite adicionar a aplicação web à tela inicial. Android também possui mecanismos de instalação de aplicações web em navegadores compatíveis. O fluxo de instalação varia conforme navegador/versão, então o painel deve mostrar orientação adequada ao dispositivo, sem prometer um botão universal.
 
-APK é um pacote Android; não atende iPhone. O [APK Android de homologação](ANDROID.md) foi criado mantendo os envios na VPS. A validação em aparelho físico continua pendente. Criar APK por si só não corrige o layout nem o funcionamento do sistema.
+APK é um pacote Android; não atende iPhone. O [APK Android de homologação](ANDROID.md) foi criado mantendo os envios na VPS. O usuário confirmou funcionamento em Android físico em 15/10/2026. Criar APK por si só não corrige o layout nem o funcionamento do sistema.
 
 ## Etapas para uma experiência móvel completa
 
