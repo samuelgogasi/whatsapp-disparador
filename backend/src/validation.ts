@@ -5,6 +5,7 @@ export const userIdSchema = z.string().regex(/^[a-zA-Z0-9_-]{1,64}$/, 'userId de
 export const campaignSchema = z.object({
   userId: userIdSchema,
   text: z.string().trim().min(1).max(10000),
+  confirmed: z.literal(true, { error: 'Confirme que revisou a mensagem e que os grupos autorizaram esta divulgação.' }),
   groupJids: z.array(z.string().regex(/^[0-9]+(?:-[0-9]+)?@g\.us$/, 'JID de grupo inválido')).min(1).max(1000),
   mediaUrl: z.string().url().refine((url) => ['https:', 'http:'].includes(new URL(url).protocol), 'Use uma URL HTTP(S)').optional(),
   mediaType: z.enum(['image', 'video']).optional(),

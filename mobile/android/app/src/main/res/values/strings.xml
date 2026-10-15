@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Em Pauta · Teste</string>
+    <string name="offline_message">Não foi possível abrir o painel. Confira sua conexão e tente novamente. Os envios já agendados continuam na VPS, conforme a conexão e a licença da conta.</string>
+    <string name="retry">Tentar novamente</string>
+</resources>

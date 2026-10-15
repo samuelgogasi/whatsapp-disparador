@@ -40,6 +40,13 @@ services:
       REDIS_URL: redis://redis:6379
       WHATSAPP_AUTH_DIR: /app/.sessions
       NODE_OPTIONS: --max-old-space-size=320
+      MIN_MESSAGE_DELAY_MS: 10000
+      MAX_MESSAGE_DELAY_MS: 10000
+      GROUP_BATCH_SIZE: 30
+      MIN_BATCH_PAUSE_MS: 60000
+      MAX_BATCH_PAUSE_MS: 60000
+      SEND_TIMEOUT_MS: 45000
+      MAX_ACTIVE_CAMPAIGNS: 2
     volumes:
       - homologacao_sessoes:/app/.sessions
     mem_limit: 512m

@@ -1,5 +1,5 @@
 import type { DispatchJob } from './queue.js';
-import { LicenseAccessError } from './errors.js';
+import { LicenseAccessError, CampaignStoppedError, UncertainDeliveryError } from './errors.js';
 
 export type DispatchStore = {
   isSent: (data: DispatchJob) => Promise<boolean>;
@@ -9,7 +9,15 @@ export type DispatchStore = {
   sent: (data: DispatchJob) => Promise<void>;
   failed: (data: DispatchJob, reason: string, terminal: boolean) => Promise<void>;
   refresh: (data: DispatchJob) => Promise<void>;
+  uncertain?: (data: DispatchJob) => Promise<void>;
 };
+
+export async function recoverInterruptedDelivery(status: string, data: DispatchJob, store: DispatchStore) {
+  if (status !== 'EM_ENVIO') return false;
+  if (!store.uncertain) throw new Error('Revisão de entrega não configurada');
+  await store.uncertain(data);
+  return true;
+}
 
 // Dependências explícitas permitem testar tentativas sem Redis ou WhatsApp.
 export async function processDispatch(
@@ -22,10 +30,16 @@ export async function processDispatch(
     await store.refresh(job.data);
     return;
   }
-  await store.processing(job.data);
   try {
+    await store.processing(job.data);
     await send(job.data);
   } catch (error) {
+    if (error instanceof CampaignStoppedError) return;
+    if (error instanceof UncertainDeliveryError) {
+      if (store.uncertain) await store.uncertain(job.data);
+      else await store.failed(job.data, error.message, true);
+      return; // Never automatically repeat a possibly delivered message.
+    }
     if (error instanceof LicenseAccessError) {
       await store.blocked(job.data);
       return;

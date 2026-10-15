@@ -21,6 +21,7 @@ O início deve estar pelo menos um minuto à frente e no máximo 366 dias no fut
 {
   "text": "Título da matéria\nhttps://seuportal.com/materia",
   "groupJids": ["123@g.us"],
+  "confirmed": true,
   "scheduledAt": "2026-10-10T12:00:00-03:00"
 }
 ```
@@ -49,7 +50,7 @@ Compilação, schema Prisma e 29 testes passaram, incluindo cálculo do delay, c
 
 A migration `20261009000000_campaign_scheduling` acrescenta SCHEDULED e scheduledAt. Foi escrita e o schema validado, mas a migration ainda não foi aplicada a PostgreSQL real neste ambiente. Aplicar junto das anteriores em homologação e testar o ciclo completo antes de implantar.
 
-Recorrência diária/semanal, edição, cancelamento, contatos individuais, grupos+contatos e calendário visual ainda não foram implementados.
+Cancelamento de pendentes está disponível no histórico e em `POST /api/campaigns/:id/cancel`. Uma mensagem já em transmissão pode concluir. Recorrência diária/semanal, edição, contatos individuais, grupos+contatos e calendário visual continuam pendentes. Para o estado atual dos intervalos e controles, veja [operação do piloto](OPERACAO_PILOTO.md); as contagens de testes acima são o registro histórico da primeira implementação.
 
 ## Prévia
 

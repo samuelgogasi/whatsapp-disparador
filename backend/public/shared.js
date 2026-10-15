@@ -1,4 +1,12 @@
 export const $ = (selector) => document.querySelector(selector);
+export async function copyText(text) {
+  try { await navigator.clipboard.writeText(text); return; } catch { /* Some Android WebViews lack Clipboard API. */ }
+  const input = document.createElement('textarea');
+  input.value = text; input.setAttribute('readonly', ''); input.style.position = 'fixed'; input.style.opacity = '0';
+  document.body.append(input); input.select();
+  const copied = document.execCommand('copy'); input.remove();
+  if (!copied) throw new Error('Não foi possível copiar. Selecione e copie o texto exibido.');
+}
 export function notice(message, error = false) {
   $('#notice').textContent = message;
   $('#notice').classList.toggle('error', error);

@@ -9,14 +9,45 @@ function fixture(registered = false) {
   let calls = 0; let created = 0;
   const socket = {
     ev: { on: (name: string, handler: (update: any) => void) => handlers.set(name, handler) },
-    requestPairingCode: async (_phone: string) => { calls++; return 'ABCD1234'; }
+    requestPairingCode: async (_phone: string) => { calls++; return 'ABCD1234'; },
+    groupFetchAllParticipating: async () => ({'123@g.us': {id:'123@g.us',subject:'Leitores'}}),
+    sendMessage: async () => ({key:{id:'sent'}})
   } as unknown as WASocket;
   const service = new WhatsAppService({ createSocket: async () => { created++; return { socket, saveCreds: async () => {}, registered }; } });
-  return { service, socket, emit: (update: object) => handlers.get('connection.update')!(update), calls: () => calls, created: () => created };
+  return { service, socket, emit: (update: object) => handlers.get('connection.update')!(update), emitEvent: (name: string, update: object) => handlers.get(name)?.(update), calls: () => calls, created: () => created };
 }
 test('normaliza E.164 e rejeita letras, prefixo zero e comprimentos inválidos', () => {
   assert.equal(pairingSchema.parse({ phoneNumber: '+55 (11) 99999-9999' }).phoneNumber, '5511999999999');
   for (const phoneNumber of ['telefone', '0000000000', '123', '1234567890123456']) assert.equal(pairingSchema.safeParse({ phoneNumber }).success, false);
+});
+
+test('cache de grupos reúne consultas simultâneas e invalida por evento ou atualização manual', async () => {
+  const state=fixture(); let fetched=0;
+  state.socket.groupFetchAllParticipating=async()=>{fetched++;return {'123@g.us':{id:'123@g.us',subject:'Leitores'}} as any;};
+  await state.service.connect('alice'); state.emit({connection:'open'});
+  await Promise.all([state.service.listGroups('alice'),state.service.listGroups('alice')]);
+  await state.service.listGroups('alice'); assert.equal(fetched,1);
+  await state.service.listGroups('alice',true); assert.equal(fetched,2);
+  state.emitEvent('groups.update',{}); await state.service.listGroups('alice'); assert.equal(fetched,3);
+});
+
+test('rejeição após chamar o socket é entrega incerta; autorização recusada não chama o socket', async () => {
+  const state=fixture();let sends=0;
+  state.socket.sendMessage=async()=>{sends++;throw Error('Conexão perdida após envio');};
+  await state.service.connect('alice');state.emit({connection:'open'});
+  await assert.rejects(state.service.sendMessage('alice','123@g.us','Teste'),/confirmar a entrega/);
+  assert.equal(sends,1);
+  await assert.rejects(state.service.sendMessage('alice','123@g.us','Teste',undefined,async()=>{throw Error('Cancelada');}),/Cancelada/);
+  assert.equal(sends,1);
+});
+
+test('socket sem resposta atinge timeout sem repetir o envio', async () => {
+  const handlers = new Map<string,(event:any)=>void>();let sends=0;
+  const socket={ev:{on:(event:string,handler:any)=>handlers.set(event,handler)},sendMessage:()=>{sends++;return new Promise(()=>{});}} as unknown as WASocket;
+  const service=new WhatsAppService({sendTimeoutMs:5,createSocket:async()=>({socket,saveCreds:async()=>{},registered:true})});
+  await service.connect('alice');handlers.get('connection.update')!({connection:'open'});
+  await assert.rejects(service.sendMessage('alice','123@g.us','Teste'),/confirmar a entrega/);
+  assert.equal(sends,1);
 });
 test('aguarda sessão pronta e reúne pedidos simultâneos em um código por usuário', async () => {
   const fixtureState = fixture();

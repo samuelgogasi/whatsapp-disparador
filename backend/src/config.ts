@@ -15,13 +15,16 @@ export const environmentSchema = z.object({
   PIX_KEY: z.string().optional(),
   REDIS_URL: z.string().url().default('redis://localhost:6379').refine((url) => ['redis:', 'rediss:'].includes(new URL(url).protocol)),
   WHATSAPP_AUTH_DIR: z.string().min(1).default('./.sessions'),
-  MIN_MESSAGE_DELAY_MS: integer(8000),
-  MAX_MESSAGE_DELAY_MS: integer(25000),
+  MIN_MESSAGE_DELAY_MS: integer(10000, 10000),
+  MAX_MESSAGE_DELAY_MS: integer(10000, 10000),
   GROUP_BATCH_SIZE: integer(30, 1),
-  MIN_BATCH_PAUSE_MS: integer(300000),
-  MAX_BATCH_PAUSE_MS: integer(600000),
-  COMPOSING_MIN_MS: integer(2000),
-  COMPOSING_MAX_MS: integer(5000)
+  MIN_BATCH_PAUSE_MS: integer(60000, 60000),
+  MAX_BATCH_PAUSE_MS: integer(60000, 60000),
+  // Retained for compatibility; dispatch no longer simulates typing.
+  COMPOSING_MIN_MS: integer(0),
+  COMPOSING_MAX_MS: integer(0),
+  SEND_TIMEOUT_MS: integer(45000, 10000),
+  MAX_ACTIVE_CAMPAIGNS: integer(2, 1).refine((value) => value <= 5, 'Use no máximo 5 campanhas ativas por cliente')
 }).superRefine((env, ctx) => {
   for (const [min, max] of [
     ['MIN_MESSAGE_DELAY_MS', 'MAX_MESSAGE_DELAY_MS'],
@@ -48,5 +51,7 @@ export const config = {
   minBatchPauseMs: env.MIN_BATCH_PAUSE_MS,
   maxBatchPauseMs: env.MAX_BATCH_PAUSE_MS,
   composingMinMs: env.COMPOSING_MIN_MS,
-  composingMaxMs: env.COMPOSING_MAX_MS
+  composingMaxMs: env.COMPOSING_MAX_MS,
+  sendTimeoutMs: env.SEND_TIMEOUT_MS,
+  maxActiveCampaigns: env.MAX_ACTIVE_CAMPAIGNS
 };

@@ -41,7 +41,8 @@ Use `Authorization: Bearer <ADMIN_API_TOKEN>`; o cookie de cliente não dá perm
 
 | Método | Endpoint | Uso |
 | --- | --- | --- |
-| GET | `/api/admin/users` | Últimos 100 usuários e estado das licenças, sem hashes/senhas |
+| GET | `/api/admin/users` | Clientes paginados, busca e filtro de licença, sem hashes/senhas |
+| GET | `/api/admin/dispatch-status` | Intervalos efetivos, limite de campanhas e contagens por status |
 | POST | `/api/admin/users/:userId/monthly-license` | `{ reference, amountCents, confirmed: true }`, confirma Pix já conferido e emite chave mensal |
 | POST | `/api/admin/users/:userId/rotate-license` | `{}`, reemite chave sem renovar a validade vigente |
 | POST | `/api/admin/users/:userId/revoke-license` | `{}`, revoga acesso |
@@ -62,17 +63,19 @@ Todas as rotas exigem login. userId deve corresponder à própria conta. Conexã
 | POST | `/api/campaigns` | Cria campanha para grupos da própria sessão |
 | GET | `/api/campaigns` | Últimas 50 campanhas do usuário autenticado |
 | GET | `/api/campaigns/:id/logs` | Resultados da própria campanha |
+| POST | `/api/campaigns/:id/cancel` | `{}`, cancela pendentes da própria campanha; transmissão já iniciada pode concluir |
 
 Exemplo de criação (com cookie de login válido):
 
 ```json
 {
   "text": "Título da matéria\nLeia no nosso portal: https://seuportal.com/materia",
-  "groupJids": ["1234567890-123456@g.us"]
+  "groupJids": ["1234567890-123456@g.us"],
+  "confirmed": true
 }
 ```
 
-O usuário é obtido do login; não é necessário enviar userId. Aceita 1–1000 grupos únicos, texto não vazio e mídia opcional na API com mediaUrl/mediaType juntos (`image`/`video`). O painel inicial oferece apenas texto/link. Proteção completa do download de mídia ainda é uma pendência antes de exposição pública.
+O usuário é obtido do login; não é necessário enviar userId. Aceita 1–1000 grupos únicos, texto não vazio e confirmação de autorização. A API publicada rejeita mídia nesta homologação. Há bloqueio de duplicatas por dez minutos e limite de duas campanhas ativas por cliente; veja [operação do piloto](../docs/OPERACAO_PILOTO.md).
 
 Conexão por código: informe número com país e DDD (ex.: `+55 11 99999-9999`), copie o código e insira na opção de vinculação por número em Aparelhos conectados no WhatsApp. A API normaliza a formatação, exige titularidade/licença, reúne pedidos simultâneos e reaproveita o código por um minuto, sem prometer a validade do provedor. Sockets reais ainda precisam de homologação; a prévia não gera códigos. Veja [pareamento e distribuição móvel](../docs/APK_PWA_E_PAREAMENTO.md).
 
@@ -80,7 +83,7 @@ Para agendar, acrescente `scheduledAt` com data ISO e fuso explícito; o painel 
 
 O worker verifica licença novamente antes de enviar. Ao vencer/revogar, pendentes ficam BLOQUEADO_LICENCA e a campanha PAUSED_LICENSE. Renovar não retoma automaticamente. Nesta versão, revise os destinos bloqueados e crie outra divulgação somente para eles.
 
-API e worker ficam na mesma instância por causa das sessões em memória. Não habilite réplicas nem deployments com instâncias sobrepostas. Intervalos e presença de digitação não garantem ausência de bloqueio ou entrega. Contatos individuais, recorrência, edição/cancelamento de agendas, outbox e recuperação completa de sessões ainda serão implementados.
+API e worker ficam na mesma instância por causa das sessões em memória. Não habilite réplicas nem deployments com instâncias sobrepostas. Intervalos não garantem ausência de bloqueio ou entrega. Contatos individuais, recorrência, edição de agendas, outbox e recuperação completa de sessões ainda serão implementados. Cancelamento de pendentes e pausa para revisão de entrega incerta já fazem parte do piloto.
 
 ## Verificação
 

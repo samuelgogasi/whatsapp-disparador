@@ -4,9 +4,9 @@ Sistema em desenvolvimento para jornalistas e donos de sites/portais divulgarem 
 
 **Avaliação e etapas:** [PLANO_DESENVOLVIMENTO.md](PLANO_DESENVOLVIMENTO.md).
 
-O painel se adapta a celular com menu recolhível e controles de toque. A revisão foi feita em larguras simuladas; ainda não há PWA/APK nem validação em aparelhos reais. Veja [uso móvel e próximas etapas](docs/MOBILE.md).
+O painel se adapta a celular. O [APK Android de homologação](docs/ANDROID.md) foi criado com os envios mantidos na VPS; instalação em aparelho real e PWA do iPhone continuam pendentes. Veja também [controles e otimizações do piloto](docs/OPERACAO_PILOTO.md).
 
-Conexão por código implementada no painel/API, com QR alternativo, ainda sem vínculo real de homologação. A distribuição solicitada será APK no Android e PWA no iPhone; [plano móvel e pareamento](docs/APK_PWA_E_PAREAMENTO.md).
+Conexão por código implementada no painel/API, com QR alternativo. O proprietário relatou teste bem-sucedido pelo navegador. A validação no APK e no iPhone deve ser feita em aparelhos reais; [plano móvel e pareamento](docs/APK_PWA_E_PAREAMENTO.md).
 
 Cada confirmação de Pix gera uma nova chave exclusiva do usuário para um mês de calendário. O cliente ativa a chave na própria conta. Veja [licenças e operação do Pix](docs/LICENCAS_E_PIX.md). O painel tem navegação por áreas e agendamento pontual de mensagens para grupos, descritos em [agendamento](docs/AGENDAMENTO.md). Públicos salvos, modelos de boletim, alertas de repetição e calendário editorial continuam planejados.
 

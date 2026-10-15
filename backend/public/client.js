@@ -1,7 +1,7 @@
-import { $, api, action, notice, date, element } from './shared.js';
+import { $, api, action, notice, date, element, copyText } from './shared.js';
 import { scheduleToIso, toBrasiliaInput } from './scheduling.js';
 let account;
-const statuses = { SCHEDULED: 'Agendada', PENDING: 'Na fila', PROCESSING: 'Em processamento', COMPLETED: 'Concluída', PARTIAL_FAILURE: 'Finalizada com falhas', PAUSED_LICENSE: 'Pausada por licença' };
+const statuses = { SCHEDULED: 'Agendada', PENDING: 'Na fila', PROCESSING: 'Em processamento', COMPLETED: 'Concluída', PARTIAL_FAILURE: 'Finalizada com falhas', PAUSED_LICENSE: 'Pausada por licença', CANCELLED: 'Cancelada', PAUSED_REVIEW: 'Pausada: conferir possível entrega no grupo antes de reenviar' };
 const views = { overview: 'Visão geral', compose: 'Nova divulgação', schedule: 'Agendamentos', history: 'Histórico', whatsapp: 'WhatsApp', billing: 'Licença e Pix' };
 function setMobileMenu(open) {
   $('.sidebar').classList.toggle('menu-open', open);
@@ -40,6 +40,10 @@ async function loadAccount() {
   $('#welcome').textContent = `Olá, ${account.user.name ?? 'jornalista'}`;
   $('#account-id').textContent = account.user.id;
   const license = account.license;
+  if (account.dispatch) {
+    const timing = account.dispatch;
+    $('#dispatch-info').textContent = `Espera entre envios: ${timing.minDelayMs / 1000}–${timing.maxDelayMs / 1000} segundos. Pausa de ${timing.minBatchPauseMs / 60000}–${timing.maxBatchPauseMs / 60000} minuto(s) a cada ${timing.batchSize} grupos. O tempo de rede e outras campanhas podem prolongar a conclusão.`;
+  }
   $('#header-access').textContent = license?.active ? 'Licença ativa' : 'Ative sua licença';
   $('#metric-license').textContent = license?.active ? license.kind === 'TRIAL' ? 'Teste' : 'Mensal' : 'Inativa';
   $('#metric-expiry').textContent = license ? `Até ${date(license.expiresAt)}` : 'Ative o teste ou sua chave';
@@ -56,7 +60,7 @@ async function loadPayment() {
   if (info.pixKey) {
     target.append(element('p', `Chave Pix pessoal: ${info.pixKey}`, 'payment-key'));
     const copy = element('button', 'Copiar chave Pix', 'secondary');
-    copy.addEventListener('click', async () => { try { await navigator.clipboard.writeText(info.pixKey); notice('Chave Pix copiada. Confira o destinatário no seu banco antes de pagar.'); } catch { notice('Selecione e copie a chave Pix exibida.', true); } });
+    copy.addEventListener('click', async () => { try { await copyText(info.pixKey); notice('Chave Pix copiada. Confira o destinatário no seu banco antes de pagar.'); } catch { notice('Selecione e copie a chave Pix exibida.', true); } });
     target.append(copy);
   } else target.append(element('p', 'Solicite a chave Pix pessoal ao responsável.', 'muted'));
   if (info.paymentWhatsapp) {
@@ -93,7 +97,18 @@ function renderCampaigns(target, campaigns) {
         details.append(output);
       } catch (error) { notice(error.message, true); } finally { logs.disabled = false; }
     });
-    row.append(details, logs); target.append(row);
+    row.append(details, logs);
+    if (['SCHEDULED', 'PENDING', 'PROCESSING', 'PAUSED_LICENSE', 'PAUSED_REVIEW'].includes(campaign.status)) {
+      const cancel = element('button', 'Cancelar pendentes', 'secondary');
+      cancel.addEventListener('click', async () => {
+        if (!confirm('Cancelar os envios pendentes desta campanha? Uma mensagem já em transmissão pode concluir. Mensagens já enviadas não serão apagadas.')) return;
+        cancel.disabled = true;
+        try { await api(`/api/campaigns/${encodeURIComponent(campaign.id)}/cancel`, { method: 'POST', body: {} }); await loadCampaigns(); notice('Campanha cancelada. Envios já em transmissão podem concluir.'); }
+        catch (error) { notice(error.message, true); cancel.disabled = false; }
+      });
+      row.append(cancel);
+    }
+    target.append(row);
   }
 }
 action('#login', async ({ currentTarget }) => {
@@ -149,7 +164,7 @@ action('#pairing', async ({ currentTarget }) => {
 }, 'submit');
 action('#copy-pairing-code', async () => {
   if (!pairingCodeValue) throw new Error('Solicite um código antes de copiar.');
-  await navigator.clipboard.writeText(pairingCodeValue); notice('Código copiado. Agora conclua a vinculação no WhatsApp.');
+  await copyText(pairingCodeValue); notice('Código copiado. Agora conclua a vinculação no WhatsApp.');
 });
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'visible' && account && !account.preview && !document.querySelector('[data-panel="whatsapp"]').hidden) {
@@ -158,7 +173,7 @@ document.addEventListener('visibilitychange', () => {
 });
 action('#refresh-connection', refreshConnection);
 action('#load-groups', async () => {
-  const { groups } = await api(`${sessionPath()}/groups`); const target = $('#groups'); target.replaceChildren();
+  const { groups } = await api(`${sessionPath()}/groups?refresh=1`); const target = $('#groups'); target.replaceChildren();
   $('#destination-count').textContent = 'Nenhum grupo selecionado.';
   for (const group of groups) {
     const label = element('label', undefined, 'check'); const check = document.createElement('input'); check.type = 'checkbox'; check.name = 'groupJids'; check.value = group.id;
@@ -174,7 +189,7 @@ action('#campaign', async ({ currentTarget }) => {
   const scheduledAt = scheduled ? scheduleToIso(String(form.get('scheduledAt'))) : undefined;
   if (scheduledAt && new Date(scheduledAt).getTime() < Date.now() + 60000) throw new Error('Agende com pelo menos 1 minuto de antecedência.');
   if (!confirm(`${scheduled ? `Agendar o início para ${date(scheduledAt)} (Brasília)` : 'Enviar agora'} para ${groupJids.length} grupo(s)? A licença precisa estar ativa no envio.`)) return;
-  const result = await api('/api/campaigns', { method: 'POST', body: { text: form.get('text'), groupJids, ...(scheduledAt ? { scheduledAt } : {}) } });
+  const result = await api('/api/campaigns', { method: 'POST', body: { text: form.get('text'), groupJids, confirmed: form.get('confirmed') === 'on', ...(scheduledAt ? { scheduledAt } : {}) } });
   notice(scheduled ? `Divulgação agendada para ${date(result.scheduledAt)} (Brasília).` : `Divulgação criada: ${result.queued} envio(s) na fila.`); await loadCampaigns();
   showView(scheduled ? 'schedule' : 'history');
 }, 'submit');

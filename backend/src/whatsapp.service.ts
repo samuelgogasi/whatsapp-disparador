@@ -12,7 +12,7 @@ import path from 'node:path';
 import { config } from './config.js';
 import { userIdSchema } from './validation.js';
 import { pairingSchema, withPairingTimeout } from './pairing.js';
-import { HttpError } from './errors.js';
+import { HttpError, UncertainDeliveryError } from './errors.js';
 
 type Session = {
   socket?: WASocket; qr?: string; connected: boolean; registered: boolean;
@@ -22,6 +22,7 @@ type Session = {
 };
 type WhatsAppDependencies = {
   createSocket: (userId: string) => Promise<{ socket: WASocket; saveCreds: () => Promise<void>; registered: boolean }>;
+  sendTimeoutMs?: number;
 };
 
 const defaultDependencies: WhatsAppDependencies = {
@@ -30,7 +31,7 @@ const defaultDependencies: WhatsAppDependencies = {
     await mkdir(authPath, { recursive: true });
     const { state, saveCreds } = await useMultiFileAuthState(authPath);
     const { version } = await fetchLatestBaileysVersion({ timeout: 10000 });
-    return { socket: makeWASocket({ auth: state, version, logger: pino({ level: 'silent' }) }), saveCreds, registered: Boolean(state.creds.registered) };
+    return { socket: makeWASocket({ auth: state, version, logger: pino({ level: 'silent' }), syncFullHistory: false, shouldSyncHistoryMessage: () => false, markOnlineOnConnect: false }), saveCreds, registered: Boolean(state.creds.registered) };
   }
 };
 
@@ -40,6 +41,8 @@ export class WhatsAppService {
   private readonly sessions = new Map<string, Session>();
   private readonly connecting = new Map<string, Promise<unknown>>();
   private stopping = false;
+  private readonly groupCache = new Map<string, { expires: number; groups: WhatsAppGroup[] }>();
+  private readonly groupRequests = new Map<string, Promise<WhatsAppGroup[]>>();
   constructor(private readonly dependencies = defaultDependencies) {}
 
   async connect(userId: string) {
@@ -66,6 +69,9 @@ export class WhatsAppService {
     if (this.stopping) { socket.end(undefined); throw new HttpError(503, 'O servidor está reiniciando.'); }
     session.socket = socket;
     session.registered = registered;
+    for (const event of ['groups.update', 'groups.upsert', 'group-participants.update'] as const) {
+      socket.ev.on(event, () => this.groupCache.delete(userId));
+    }
 
     socket.ev.on('creds.update', () => { void saveCreds().catch(() => console.error('Falha ao salvar credenciais do WhatsApp')); });
     socket.ev.on('connection.update', (update) => { void (async () => {
@@ -90,6 +96,8 @@ export class WhatsAppService {
         session.resolveReady(false);
         const code = (lastDisconnect?.error as Boom | undefined)?.output?.statusCode;
         this.sessions.delete(userId);
+        this.groupCache.delete(userId);
+        this.groupRequests.delete(userId);
         if (!this.stopping && code !== DisconnectReason.loggedOut && (session.registered || code === DisconnectReason.restartRequired)) {
           const timer = setTimeout(() => {
             if (!this.sessions.has(userId)) void this.connect(userId).catch(() => console.error('Falha ao reconectar WhatsApp'));
@@ -161,6 +169,8 @@ export class WhatsAppService {
       session.socket?.end(undefined);
     }
     this.sessions.clear();
+    this.groupCache.clear();
+    this.groupRequests.clear();
   }
 
   getStatus(userId: string) {
@@ -168,24 +178,37 @@ export class WhatsAppService {
     return { connected: session?.connected ?? false, status: session?.connected ? 'connected' : session?.socket ? 'connecting' : 'disconnected' };
   }
 
-  async listGroups(userId: string): Promise<WhatsAppGroup[]> {
+  async listGroups(userId: string, force = false): Promise<WhatsAppGroup[]> {
     const socket = this.requireSocket(userId);
-    const groups = await socket.groupFetchAllParticipating();
-    return Object.values(groups).map((group) => ({ id: group.id, subject: group.subject }));
+    const cached = this.groupCache.get(userId);
+    if (!force && cached && cached.expires > Date.now()) return cached.groups;
+    const pending = this.groupRequests.get(userId);
+    if (pending) return pending;
+    const request = (async () => {
+      const groups = await socket.groupFetchAllParticipating();
+      const list = Object.values(groups).map((group) => ({ id: group.id, subject: group.subject }));
+      if (this.sessions.get(userId)?.socket === socket) this.groupCache.set(userId, { expires: Date.now() + 60000, groups: list });
+      return list;
+    })();
+    this.groupRequests.set(userId, request);
+    try { return await request; } finally { if (this.groupRequests.get(userId) === request) this.groupRequests.delete(userId); }
   }
 
   async sendMessage(userId: string, groupJid: string, text: string, media?: { url: string; type?: string }, authorize?: () => Promise<unknown>) {
     const socket = this.requireSocket(userId);
-    await socket.presenceSubscribe(groupJid);
-    await socket.sendPresenceUpdate('composing', groupJid);
-    await new Promise((resolve) => setTimeout(resolve, randomBetween(config.composingMinMs, config.composingMaxMs)));
-    await socket.sendPresenceUpdate('paused', groupJid);
     if (authorize) await authorize();
-    if (media?.url) {
-      const content = media.type?.startsWith('video') ? { video: { url: media.url }, caption: text } : { image: { url: media.url }, caption: text };
-      return socket.sendMessage(groupJid, content);
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    try {
+      const content = media?.url ? media.type?.startsWith('video') ? { video: { url: media.url }, caption: text } : { image: { url: media.url }, caption: text } : { text };
+      return await Promise.race([
+        socket.sendMessage(groupJid, content),
+        new Promise<never>((_resolve, reject) => { timer = setTimeout(() => reject(new UncertainDeliveryError()), this.dependencies.sendTimeoutMs ?? config.sendTimeoutMs); })
+      ]);
+    } catch {
+      throw new UncertainDeliveryError();
+    } finally {
+      if (timer) clearTimeout(timer);
     }
-    return socket.sendMessage(groupJid, { text });
   }
 
   private requireSocket(userId: string) {

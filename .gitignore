@@ -5,3 +5,9 @@ dist/
 !.env.example
 .sessions/
 *.log
+artifacts/
+mobile/android/.gradle/
+mobile/android/**/build/
+mobile/android/local.properties
+*.keystore
+*.jks

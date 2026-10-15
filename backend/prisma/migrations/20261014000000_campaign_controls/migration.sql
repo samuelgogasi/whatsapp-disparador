@@ -1,0 +1,8 @@
+ALTER TYPE "CampaignStatus" ADD VALUE IF NOT EXISTS 'CANCELLED';
+ALTER TYPE "CampaignStatus" ADD VALUE IF NOT EXISTS 'PAUSED_REVIEW';
+ALTER TYPE "MessageStatus" ADD VALUE IF NOT EXISTS 'CANCELADO';
+ALTER TYPE "MessageStatus" ADD VALUE IF NOT EXISTS 'ENTREGA_INCERTA';
+ALTER TYPE "MessageStatus" ADD VALUE IF NOT EXISTS 'AGUARDANDO_REVISAO';
+ALTER TYPE "MessageStatus" ADD VALUE IF NOT EXISTS 'EM_ENVIO';
+ALTER TABLE "Campaign" ADD COLUMN "authorizedAt" TIMESTAMP(3), ADD COLUMN "fingerprint" TEXT;
+CREATE INDEX "Campaign_userId_fingerprint_createdAt_idx" ON "Campaign"("userId", "fingerprint", "createdAt");

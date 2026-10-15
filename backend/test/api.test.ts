@@ -13,13 +13,15 @@ async function serverFixture(t: any, active = true, groups: { id: string; subjec
   let createdCampaign: any;
   let queuedJobs: any[] = [];
   const db = {
-    $transaction: async (queries: Promise<unknown>[]) => Promise.all(queries),
+    $transaction: async (queries: any) => typeof queries === 'function' ? queries(db) : Promise.all(queries),
+    $queryRaw: async () => [],
     authSession: { findUnique: async ({ where }: any) => where.tokenHash === hashSecret('session_test') ? { userId: 'alice', expiresAt: new Date(Date.now() + 10000) } : null },
     license: { findFirst: async () => ({ activatedAt: new Date(), revokedAt: null, expiresAt: new Date(Date.now() + (active ? 10000 : -10000)) }) },
     campaign: {
       create: async ({ data }: any) => { createdCampaign = { id: 'new-campaign', ...data }; return createdCampaign; },
       findMany: async ({ where }: any) => { queriedUserId = where.userId; return []; },
-      findFirst: async ({ where }: any) => where.userId === 'alice' && where.id === 'own' ? { id: 'own', userId: 'alice' } : null
+      count: async () => 0,
+      findFirst: async ({ where }: any) => where.userId === 'alice' && where.id === 'own' ? { id: 'own', userId: 'alice', status: 'PENDING' } : null
     },
     messageLog: { findMany: async () => [] },
     user: { findMany: async () => [], count: async () => 0 }
@@ -113,7 +115,7 @@ test('agendamento persiste data UTC e mantém jobs adiados até o início previs
   const fixture = await serverFixture(t, true, [{ id: '123@g.us', subject: 'Leitores' }]);
   const scheduledAt = new Date(Date.now() + 10 * 60000).toISOString();
   const before = Date.now();
-  const response = await fixture.request('/api/campaigns', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: 'Matéria agendada', groupJids: ['123@g.us'], scheduledAt }) });
+  const response = await fixture.request('/api/campaigns', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: 'Matéria agendada', groupJids: ['123@g.us'], confirmed: true, scheduledAt }) });
   assert.equal(response.status, 202);
   assert.equal((await response.json()).scheduledAt, scheduledAt);
   assert.equal(fixture.createdCampaign().status, 'SCHEDULED');
@@ -125,7 +127,7 @@ test('agendamento persiste data UTC e mantém jobs adiados até o início previs
 });
 test('envio imediato mantém delay zero; data passada é rejeitada sem criar campanha', async (t) => {
   const fixture = await serverFixture(t, true, [{ id: '123@g.us', subject: 'Leitores' }]);
-  const post = (body: object) => fixture.request('/api/campaigns', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  const post = (body: object) => fixture.request('/api/campaigns', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ confirmed: true, ...body }) });
   assert.equal((await post({ text: 'Matéria', groupJids: ['123@g.us'], scheduledAt: '2000-01-01T00:00:00Z' })).status, 400);
   assert.equal(fixture.createdCampaign(), undefined);
   assert.equal((await post({ text: 'Matéria', groupJids: ['123@g.us'] })).status, 202);

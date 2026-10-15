@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { campaignSchema, userIdSchema } from '../src/validation.js';
 import { environmentSchema } from '../src/config.js';
 
-const input = { userId: 'operador-1', text: 'Notícia', groupJids: ['123@g.us'] };
+const input = { userId: 'operador-1', text: 'Notícia', groupJids: ['123@g.us'], confirmed: true };
 test('campanha válida aceita texto ou mídia completa', () => {
   assert.equal(campaignSchema.safeParse(input).success, true);
   assert.equal(campaignSchema.safeParse({ ...input, mediaUrl: 'https://example.com/image.jpg', mediaType: 'image' }).success, true);

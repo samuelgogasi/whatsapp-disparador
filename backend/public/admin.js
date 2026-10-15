@@ -1,4 +1,4 @@
-import { $, api, action, notice, date, element } from './shared.js';
+import { $, api, action, notice, date, element, copyText } from './shared.js';
 let adminToken = '';
 let users = [];
 let clientsPage = 1;
@@ -81,7 +81,7 @@ action('#issue', async ({ currentTarget }) => {
   currentTarget.elements.reference.value = ''; currentTarget.elements.confirmed.checked = false;
   notice('Chave emitida. Copie agora; ela não será exibida novamente pelo servidor.'); await loadUsers();
 }, 'submit');
-action('#copy-key', async () => { await navigator.clipboard.writeText($('#issued-key').value); notice('Chave copiada. Entregue apenas ao titular indicado.'); });
+action('#copy-key', async () => { await copyText($('#issued-key').value); notice('Chave copiada. Entregue apenas ao titular indicado.'); });
 action('#revoke', async () => {
   const user = selectedUser(); if (!user) throw new Error('Selecione um cliente.');
   if (!confirm(`Revogar o acesso de ${user.email ?? user.id}? Os próximos envios serão bloqueados.`)) return;

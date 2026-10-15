@@ -22,7 +22,7 @@ test('horário escolhido em Brasília converte para UTC sem depender do fuso do 
   assert.throws(() => scheduleToIso(''), /válid/);
 });
 test('agenda exige fuso explícito, antecedência mínima e limite de um ano', () => {
-  const campaign = { userId: 'alice', text: 'Notícia', groupJids: ['123@g.us'] };
+  const campaign = { userId: 'alice', text: 'Notícia', groupJids: ['123@g.us'], confirmed: true };
   assert.equal(campaignSchema.safeParse({ ...campaign, scheduledAt: new Date(Date.now() + 120000).toISOString() }).success, true);
   for (const value of ['2000-01-01T00:00:00Z', '2026-10-09T12:00:00', 'inválido', new Date(Date.now() + 1000).toISOString(), new Date(Date.now() + 367 * 86400000).toISOString()]) {
     assert.equal(campaignSchema.safeParse({ ...campaign, scheduledAt: value }).success, false);

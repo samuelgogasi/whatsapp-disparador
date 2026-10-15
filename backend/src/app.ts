@@ -2,7 +2,7 @@ import express from 'express';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { z } from 'zod';
-import { CampaignStatus, Prisma, type PrismaClient } from '@prisma/client';
+import { Prisma, type PrismaClient } from '@prisma/client';
 import { config } from './config.js';
 import { campaignSchema, userIdSchema } from './validation.js';
 import { authenticate, authenticateAdmin, authRateLimit, createLoginSession, readSessionToken, sessionCookie } from './auth.js';
@@ -12,6 +12,7 @@ import { HttpError } from './errors.js';
 import { buildCampaignJobs, type EnqueuedDispatch } from './scheduling.js';
 import { pairingSchema } from './pairing.js';
 import { createAdminRouter } from './admin.js';
+import { createCampaign, cancelCampaign } from './campaigns.js';
 
 export type AppDependencies = {
   db: PrismaClient;
@@ -20,7 +21,7 @@ export type AppDependencies = {
     requestPairingCode: (userId: string, phoneNumber: string) => Promise<unknown>;
     getQr: (userId: string) => string | null;
     getStatus: (userId: string) => { connected: boolean; status: string };
-    listGroups: (userId: string) => Promise<{ id: string; subject: string }[]>;
+    listGroups: (userId: string, force?: boolean) => Promise<{ id: string; subject: string }[]>;
   };
   enqueue: (jobs: EnqueuedDispatch[]) => Promise<unknown>;
   checkReady?: () => Promise<void>;
@@ -98,13 +99,22 @@ export function createApp(deps: AppDependencies, settings = config) {
   app.post('/api/admin/users/:userId/rotate-license', async (req, res) => {
     res.status(201).json(await rotateLicense(db, userIdSchema.parse(req.params.userId)));
   });
+  app.get('/api/admin/dispatch-status', async (_req, res) => res.json({
+    messageDelayMs: { min: settings.minMessageDelayMs, max: settings.maxMessageDelayMs },
+    batchSize: settings.groupBatchSize,
+    batchPauseMs: { min: settings.minBatchPauseMs, max: settings.maxBatchPauseMs },
+    sendTimeoutMs: settings.sendTimeoutMs,
+    maxActiveCampaignsPerUser: settings.maxActiveCampaigns,
+    concurrency: 1,
+    campaigns: await db.campaign.groupBy({ by: ['status'], _count: true })
+  }));
 
   app.use('/api', authenticate(db));
   app.get('/api/payment-info', (_req, res) => res.json({ pixKey: settings.pixKey ?? null, paymentWhatsapp: settings.paymentWhatsapp ?? null }));
   app.get('/api/me', async (_req, res) => {
     const user = await db.user.findUniqueOrThrow({ where: { id: res.locals.userId }, select: { id: true, name: true, email: true, trialStartedAt: true, trialEndsAt: true } });
     const license = await db.license.findFirst({ where: { userId: user.id }, orderBy: { createdAt: 'desc' } });
-    res.json({ user, license: license ? publicLicense(license) : null });
+    res.json({ user, license: license ? publicLicense(license) : null, dispatch: { minDelayMs: settings.minMessageDelayMs, maxDelayMs: settings.maxMessageDelayMs, batchSize: settings.groupBatchSize, minBatchPauseMs: settings.minBatchPauseMs, maxBatchPauseMs: settings.maxBatchPauseMs } });
   });
   app.post('/api/license/trial', async (_req, res) => res.status(201).json(await startTrial(db, res.locals.userId)));
   app.post('/api/license/activate', authRateLimit(), async (req, res) => {
@@ -134,9 +144,9 @@ export function createApp(deps: AppDependencies, settings = config) {
     if (!qr) throw new HttpError(404, 'QR Code ainda não disponível.');
     res.json({ qr });
   });
-  app.get('/api/sessions/:userId/groups', async (_req, res) => {
+  app.get('/api/sessions/:userId/groups', async (req, res) => {
     await requireLicense(db, res.locals.userId);
-    res.json({ groups: await whatsapp.listGroups(res.locals.userId) });
+    res.json({ groups: await whatsapp.listGroups(res.locals.userId, req.query.refresh === '1') });
   });
   app.post('/api/campaigns', async (req, res) => {
     if (req.body?.userId && req.body.userId !== res.locals.userId) throw new HttpError(403, 'Campanha deve pertencer à sua conta.');
@@ -146,11 +156,12 @@ export function createApp(deps: AppDependencies, settings = config) {
     const groups = await whatsapp.listGroups(input.userId);
     const available = new Set(groups.map((group) => group.id));
     if (input.groupJids.some((id) => !available.has(id))) throw new HttpError(400, 'Selecione apenas grupos disponíveis na sua sessão.');
-    const campaign = await db.campaign.create({ data: { userId: input.userId, text: input.text, mediaUrl: input.mediaUrl, mediaType: input.mediaType, scheduledAt: input.scheduledAt, totalGroups: input.groupJids.length, status: input.scheduledAt ? CampaignStatus.SCHEDULED : CampaignStatus.PENDING, messageLogs: { create: input.groupJids.map((groupJid) => ({ userId: input.userId, groupJid })) } } });
+    const campaign = await createCampaign(db, input, settings.maxActiveCampaigns);
     await enqueue(buildCampaignJobs({ id: campaign.id, ...input }));
     res.status(202).json({ campaignId: campaign.id, queued: input.groupJids.length, scheduledAt: campaign.scheduledAt });
   });
   app.get('/api/campaigns', async (_req, res) => res.json(await db.campaign.findMany({ where: { userId: res.locals.userId }, take: 50, include: { _count: { select: { messageLogs: true } } }, orderBy: { createdAt: 'desc' } })));
+  app.post('/api/campaigns/:id/cancel', async (req, res) => res.json(await cancelCampaign(db, req.params.id, res.locals.userId)));
   app.get('/api/campaigns/:id/logs', async (req, res) => {
     const campaign = await db.campaign.findFirst({ where: { id: req.params.id, userId: res.locals.userId } });
     if (!campaign) throw new HttpError(404, 'Campanha não encontrada.');
