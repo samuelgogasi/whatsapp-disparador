@@ -1,5 +1,7 @@
 # Avaliação e plano de desenvolvimento
 
+**Estado consolidado em 15/10/2026:** consulte o [Guia do Produto](docs/GUIA_DO_PRODUTO.md), incluindo a tabela atualizada de próximas etapas. APK testado pelo proprietário, PWA publicado, fila por conta e recursos ampliados já entregues. As revisões abaixo preservam o histórico e podem conter pendências que foram resolvidas posteriormente.
+
 Atualização de 15/10/2026: [fila por conta e concorrência de três contas](docs/FILAS_POR_CONTA.md). Limites do aplicativo ajustados para 1.536 MiB e 1 CPU. As descrições de fila global serial abaixo são históricas; os cálculos de capacidade anteriores não se aplicam diretamente à nova coordenação.
 
 Precificação e regras comerciais: ver [proposta de 15/10/2026](docs/PRECIFICACAO_E_REGRAS.md). Cadastro com destaque dos sete dias grátis e orientação inicial implementados. Preço e franquias permanecem em definição; não há contador mensal no backend.
