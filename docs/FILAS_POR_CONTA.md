@@ -27,7 +27,7 @@ Somente o projeto `whatsapp-homologacao/disparador` é alterado. Não modificar 
 
 54 testes automatizados passaram, incluindo simulação com relógio controlado de dez contas × quinhentos destinos (5.000 entregas fictícias). Verificados intervalos independentes, pausa compartilhada entre campanhas, madrugada, agendamento futuro, cancelamento, vencimento, duas tentativas, entrega incerta e retomada com estado persistido. Essa simulação não mede consumo de sessões WhatsApp reais.
 
-`node scripts/test-account-dispatch.mjs` executa integração com PostgreSQL e Redis reais, criando schema e fila temporários exclusivos. Usa dez contas fictícias com quatro destinos cada, remetente falso, intervalos reduzidos apenas no teste, três execuções simultâneas e reinício do worker. Não importa o serviço de WhatsApp nem conecta contas reais. Limpa somente os recursos temporários criados pelo próprio teste. Executar somente na homologação. Resultado de execução será registrado após a publicação.
+`node scripts/test-account-dispatch.mjs` executa integração com PostgreSQL e Redis reais, criando schema e fila temporários exclusivos. Usa dez contas fictícias com quatro destinos cada, remetente falso, intervalos reduzidos apenas no teste, três execuções simultâneas e reinício do worker. Não importa o serviço de WhatsApp nem conecta contas reais. Limpa somente os recursos temporários criados pelo próprio teste. Executar somente na homologação. Executado com sucesso na VPS após a publicação: dez contas, quarenta entregas fictícias, máximo de três transmissões simultâneas, reinício gracioso do worker, zero duplicatas e zero envios WhatsApp. O schema e a fila temporários foram removidos pelo teste.
 
 ## Publicação e retorno
 
@@ -36,3 +36,5 @@ A migração `20261015000000_account_dispatch` é aditiva. A fila antiga `whatsa
 Não retornar simplesmente para o worker antigo com campanhas em andamento: tarefas antigas e novas não compartilham a mesma política de pacing. Em eventual rollback, interromper admissões, aguardar transmissões, revisar `EM_ENVIO`/entregas incertas e reconstruir somente pendentes confirmados. Não repetir envios já concluídos.
 
 Capacidade para dez WhatsApps reais com 2.000–2.500 entregas diárias cada ainda depende de teste autorizado com sessões reais e observação de memória, CPU, conexão, fila e falhas. Não é garantida pelos testes fictícios.
+
+Verificação pós-publicação: API confirmou concorrência 3, política por conta e operação 24/7. Cgroups confirmaram 1.536 MiB de memória e quota CPU `100000 100000` (1 CPU); heap Node 1.024 MiB. A amostra do monitor após a implantação mostrou VPS com cerca de 1,8 GB / 3,6 GB (50,8%) e CPU 3%; não é medição sob dez sessões reais. Os identificadores dos contêineres UNASP permaneceram os mesmos.
